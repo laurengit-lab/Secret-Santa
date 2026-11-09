@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Our family Secret Santa for Christmas 2026. Enter your code to see who you are buying for.">
+<meta property="og:title" content="Family Secret Santa">
+<meta property="og:description" content="Christmas 2026. Enter your code to see who you are buying for.">
+<meta name="theme-color" content="#0f2a20">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%81%3C/text%3E%3C/svg%3E">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Family Secret Santa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&family=Poppins:wght@400;500;600&display=swap">
+<style>
+/* Layout: a single centred invitation. Title and code box are the hero, three rules sit below on hairlines, admin tools appear only on the private link */
+/* Single look on purpose: a night-green Christmas scene, the same in light and dark */
+:root {
+  color-scheme: dark;
+  --bg-deep: #0f2a20;
+  --bg-mid: #1c4535;
+  --bg-glow: #2c6550;
+  --panel: #173a2d;
+  --row: #224c3c;
+  --hairline: #2f5a49;
+  --ink: #f4f1e6;
+  --ink-soft: #b7c9bd;
+  --gold: #f4c43f;
+  --gold-light: #ffe07a;
+  --on-gold: #2a230c;
+  --pearl: #f6f4ef;
+  --on-pearl: #1b3a2e;
+  --hat-red: #d23b3b;
+  --berry: #ff9d8c;
+  --mint: #8fe0b2;
+  --snow: #ffffff;
+  --f-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --f-body: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg-deep);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  min-height: 100%;
+}
+.backdrop {
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, var(--bg-glow) 0%, transparent 75%),
+    linear-gradient(180deg, var(--bg-mid) 0%, var(--bg-deep) 70%);
+}
+#snow { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+.page {
+  position: relative; z-index: 1;
+  max-width: 46rem;
+  margin: 0 auto;
+  padding-block: clamp(3rem, 9vh, 6rem) 3rem;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+  display: grid;
+  gap: clamp(3rem, 8vh, 4.5rem);
+}
+h1, h2 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- Hero ---- */
+.hero { display: grid; justify-items: center; text-align: center; gap: 1.1rem; }
+.year {
+  display: inline-flex; align-items: center; gap: 0.75rem;
+  font-size: 0.78rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
+}
+.year::before, .year::after { content: ""; width: 2rem; height: 1px; background: currentColor; opacity: 0.55; }
+.logo {
+  font-family: var(--f-display); font-weight: 700;
+  font-size: clamp(2.5rem, 14vw, 6.2rem); line-height: 0.95; letter-spacing: -0.015em; white-space: nowrap;
+  color: var(--gold);
+  background: linear-gradient(180deg, var(--gold-light) 15%, var(--gold) 85%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  padding-top: 0.15em;
+}
+.logo .hatted {
+  position: relative; display: inline-block;
+  background: inherit; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hat { position: absolute; width: 0.56em; left: -0.02em; top: -0.36em; transform: rotate(-14deg); }
+.names { color: var(--ink-soft); font-size: 0.98rem; letter-spacing: 0.02em; }
+.names span { color: var(--gold); opacity: 0.6; padding: 0 0.1rem; }
+.page > * { min-width: 0; }
+
+.reveal-box { width: 100%; max-width: 30rem; display: grid; gap: 0.75rem; margin-top: 1.25rem; }
+.reveal-box label { font: 600 1.2rem/1.3 var(--f-body); }
+.field {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: var(--panel);
+  border: 1.5px solid var(--gold); border-radius: 999px; padding: 0.35rem 0.35rem 0.35rem 1.4rem;
+  box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.7);
+}
+.field input {
+  flex: 1; min-width: 0; width: 0; background: transparent; border: 0; outline: none;
+  font: 500 1.1rem var(--f-body); color: var(--ink); letter-spacing: 0.06em; text-transform: uppercase; padding: 0.75rem 0;
+}
+.field input::placeholder { color: var(--ink-soft); opacity: 0.8; letter-spacing: 0.04em; text-transform: none; font-weight: 400; }
+.field:focus-within { box-shadow: 0 0 0 4px rgba(244, 196, 63, 0.25), 0 18px 40px -22px rgba(0, 0, 0, 0.7); }
+.help { color: var(--ink-soft); font-size: 0.88rem; }
+.error { color: var(--berry); font-weight: 500; font-size: 0.92rem; }
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem;
+  font: 600 1rem/1 var(--f-body);
+  border-radius: 999px; padding: 0.95rem 1.5rem; border: 0; cursor: pointer; flex: none;
+  transition: filter 0.15s;
+}
+.btn svg { width: 1.15em; height: 1.15em; flex: none; }
+.btn--gold { background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%); color: var(--on-gold); }
+.btn--pearl { background: var(--pearl); color: var(--on-pearl); }
+.btn--ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--hairline); }
+.btn:hover { filter: brightness(1.07); }
+.btn--small { font-size: 0.86rem; padding: 0.6rem 1rem; font-weight: 500; }
+.btn--block { width: 100%; }
+.link {
+  font: 500 0.9rem var(--f-body); background: none; border: 0; padding: 0.25rem 0;
+  color: var(--ink-soft); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; justify-self: center;
+}
+.link:hover { color: var(--ink); }
+.btn:focus-visible, .link:focus-visible { outline: 3px solid var(--gold-light); outline-offset: 3px; }
+
+/* ---- The rules ---- */
+.rules {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: 1fr;
+  border-top: 1px solid var(--hairline);
+}
+.rule { display: grid; grid-template-columns: 5.5rem 1fr; gap: 1rem; align-items: baseline; padding: 1.4rem 0; border-bottom: 1px solid var(--hairline); }
+.rule h2 { font: 600 1.02rem var(--f-body); margin-bottom: 0.2rem; }
+.rule p { color: var(--ink-soft); font-size: 0.95rem; }
+.rule .rule__big { font-family: var(--f-display); font-style: italic; font-weight: 500; font-size: 2.1rem; line-height: 1; color: var(--gold); }
+
+.footnote { text-align: center; color: var(--ink-soft); font-size: 0.88rem; }
+
+/* ---- Admin (private link only) ---- */
+.admin {
+  background: var(--panel); border: 1.5px dashed var(--gold); border-radius: 24px;
+  padding: 1.6rem 1.25rem; display: grid; gap: 1.1rem;
+}
+.admin-head { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; flex-wrap: wrap; }
+.admin h2 { font: 600 1.4rem var(--f-body); }
+.admin-badge {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--on-gold); background: var(--gold); border-radius: 999px; padding: 0.3rem 0.8rem;
+}
+.muted { color: var(--ink-soft); font-size: 0.95rem; }
+.stack { display: grid; gap: 1rem; }
+.rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+.row {
+  display: flex; align-items: center; gap: 0.85rem; flex-wrap: wrap;
+  background: var(--row); border-radius: 18px; padding: 0.7rem 0.9rem 0.7rem 0.7rem;
+  font-weight: 500;
+}
+.row__main { flex: 1; min-width: 0; display: grid; gap: 0.05rem; }
+.row code { font: 600 0.88rem ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: 0.05em; color: var(--gold); white-space: nowrap; }
+/* Codes never split across lines; on narrow screens the copy button drops below instead */
+#codeList .row__main { min-width: max-content; }
+#codeList .row .btn { margin-left: auto; }
+.row textarea {
+  flex: 1 1 100%; font: 0.9rem var(--f-body); padding: 0.7rem; border-radius: 12px;
+  border: 1px solid var(--hairline); background: var(--bg-deep); color: var(--ink); resize: vertical;
+}
+.avatar {
+  width: 2.6rem; height: 2.6rem; border-radius: 50%; flex: none;
+  display: grid; place-items: center;
+  font: 700 1rem var(--f-display); color: var(--on-gold);
+  border: 2px solid var(--row);
+}
+.avatar--0 { background: linear-gradient(135deg, var(--gold-light), var(--gold)); }
+.avatar--1 { background: linear-gradient(135deg, var(--berry), var(--hat-red)); color: var(--pearl); }
+.avatar--2 { background: var(--pearl); color: var(--on-pearl); }
+.pair { display: flex; flex: none; }
+.pair .avatar + .avatar { margin-left: -0.8rem; }
+.check { display: flex; gap: 0.75rem; align-items: center; font-size: 0.95rem; cursor: pointer; }
+.check input { width: 1.2rem; height: 1.2rem; accent-color: var(--gold); flex: none; }
+.note { font-size: 0.86rem; color: var(--ink-soft); text-align: center; }
+.status { display: flex; align-items: center; gap: 0.55rem; font-weight: 500; color: var(--mint); }
+.status::before { content: ""; width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--mint); flex: none; }
+.checked {
+  font-size: 0.9rem; color: var(--ink); background: var(--row);
+  border-left: 3px solid var(--mint); border-radius: 10px; padding: 0.7rem 0.9rem;
+}
+.backup { display: grid; gap: 0.6rem; justify-items: center; }
+.backup textarea {
+  width: 100%; font: 0.85rem var(--f-body); padding: 0.7rem; border-radius: 12px;
+  border: 1px solid var(--hairline); background: var(--bg-deep); color: var(--ink); resize: vertical;
+}
+.restart { border-top: 1px solid var(--hairline); padding-top: 1rem; display: grid; gap: 0.8rem; }
+.confirm { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; text-align: center; }
+.confirm p { flex: 1 1 100%; font-size: 0.95rem; }
+
+/* ---- Private reveal ---- */
+.cover {
+  position: fixed; inset: 0; z-index: 20;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 30%, var(--bg-glow) 0%, transparent 70%),
+    var(--bg-deep);
+  display: grid; place-items: center; overflow-y: auto;
+  padding-top: calc(1.5rem + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+.cover__inner { width: 100%; max-width: 24rem; display: grid; gap: 1.5rem; justify-items: center; text-align: center; }
+.cover h2 { font-family: var(--f-display); font-weight: 700; font-size: clamp(2.2rem, 9vw, 3rem); line-height: 1.05; color: var(--gold); }
+.cover .btn--gold { width: 100%; }
+.tag {
+  position: relative; width: min(20rem, 100%);
+  background: linear-gradient(160deg, var(--gold-light) 0%, var(--gold) 100%);
+  color: var(--on-gold);
+  padding: 1.8rem 1.8rem 1.7rem 3.6rem;
+  clip-path: polygon(2.3rem 0, 100% 0, 100% 100%, 2.3rem 100%, 0 calc(100% - 2.3rem), 0 2.3rem);
+  text-align: left; transform: rotate(-3deg);
+  display: grid; gap: 0.15rem;
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.45));
+}
+.tag::before {
+  content: ""; position: absolute; left: 1.1rem; top: 50%; width: 0.95rem; height: 0.95rem; margin-top: -0.475rem;
+  border-radius: 50%; background: var(--bg-deep);
+}
+.tag__label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.7; }
+.tag__to {
+  font-family: var(--f-display); font-style: italic; font-weight: 600; font-size: 3.2rem; line-height: 1;
+  border-bottom: 1.5px solid currentColor; padding-bottom: 0.4rem; margin-bottom: 0.6rem;
+}
+.tag__from { font-family: var(--f-display); font-style: italic; font-size: 1.35rem; line-height: 1.1; }
+.tag.is-in { animation: tagIn 0.6s cubic-bezier(.2,.8,.2,1.2) both; }
+@keyframes tagIn {
+  from { opacity: 0; transform: translateY(24px) rotate(-14deg) scale(0.9); }
+  to { opacity: 1; transform: rotate(-3deg); }
+}
+.cover .reminder { color: var(--ink-soft); font-size: 0.95rem; }
+.cover .reminder strong { color: var(--ink); font-weight: 600; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tag.is-in { animation: none; }
+  .btn { transition: none; }
+}
+
+/* ---- Wider screens ---- */
+@media (min-width: 760px) {
+  .rules { grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--hairline); }
+  .rule {
+    grid-template-columns: 1fr; gap: 0.6rem; align-items: start; align-content: start; text-align: center;
+    padding: 2rem 1.5rem; border-bottom: 0;
+  }
+  .rule + .rule { border-left: 1px solid var(--hairline); }
+  .rule .rule__big { font-size: 2.8rem; }
+  .admin { padding: 2rem; }
+  #codeList { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 380px) {
+  .field { padding-left: 1.1rem; }
+  .field .btn { padding: 0.85rem 1.1rem; }
+  .rule { grid-template-columns: 4.6rem 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="backdrop" aria-hidden="true"></div>
+<canvas id="snow" aria-hidden="true"></canvas>
+
+<main class="page">
+  <header class="hero">
+    <p class="year">Christmas 2026</p>
+    <h1 class="logo">Secret <span class="hatted"><svg class="hat" viewBox="0 0 60 52" aria-hidden="true">
+      <path d="M6 40 C10 22 24 6 42 4 C50 3 56 10 55 20 C53 14 48 12 44 14 C36 18 34 30 34 40 Z" fill="var(--hat-red)"/>
+      <rect x="2" y="36" width="38" height="12" rx="6" fill="var(--pearl)"/>
+      <circle cx="54" cy="22" r="6" fill="var(--pearl)"/>
+    </svg>S</span>anta</h1>
+    <p class="names">Mom <span>·</span> Dad <span>·</span> Jen <span>·</span> Logan <span>·</span> Lauren <span>·</span> Ryan</p>
+
+    <form class="reveal-box" id="codeForm" novalidate>
+      <label for="codeInput">Who are you shopping for?</label>
+      <div class="field">
+        <input id="codeInput" placeholder="Enter your code" autocomplete="off" autocapitalize="characters" spellcheck="false">
+        <button class="btn btn--gold" type="submit">Reveal</button>
+      </div>
+      <p class="help" id="codeHelp">You'll get a text message from Lauren with your code.</p>
+      <p class="error" id="codeError" role="alert" hidden></p>
+    </form>
+  </header>
+
+  <ul class="rules" aria-label="The rules">
+    <li class="rule">
+      <p class="rule__big">$100</p>
+      <div><h2>Gift limit</h2><p>Spend up to $100 on your person.</p></div>
+    </li>
+    <li class="rule">
+      <p class="rule__big">Shh</p>
+      <div><h2>Keep it secret</h2><p>Don't tell anyone who you got, not even your partner.</p></div>
+    </li>
+    <li class="rule">
+      <p class="rule__big">One</p>
+      <div><h2>One gift each</h2><p>Everyone buys for one person. Nobody gets themselves or their partner.</p></div>
+    </li>
+  </ul>
+
+  <section class="admin" id="drawCard" aria-labelledby="draw-h" hidden>
+    <div class="admin-head">
+      <h2 id="draw-h">Draw names</h2>
+      <p class="admin-badge">Admin only</p>
+    </div>
+    <p class="muted">Only shows on your private admin link. Everyone else sees the page above.</p>
+
+    <div class="stack" id="setupView">
+      <ul class="rows" id="coupleList"></ul>
+      <label class="check" for="noSwaps">
+        <input type="checkbox" id="noSwaps" checked>
+        No two people draw each other
+      </label>
+      <button class="btn btn--gold btn--block" id="drawBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="m12 2.8 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.6l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8Z"/></svg>
+        Let the magic begin
+      </button>
+      <p class="note">Results stay hidden, even from you.</p>
+      <p class="error" id="loadError" role="alert" hidden>The draw saved on this device didn't pass its safety check, so it was set aside. Draw again and send the new codes.</p>
+      <p class="error" id="drawError" role="alert" hidden>The draw didn't work. Press the button again.</p>
+    </div>
+
+    <div class="stack" id="drawnView" hidden>
+      <p class="status" id="drawnStatus">Names are drawn</p>
+      <p class="checked" id="checkedNote">Checked: everyone gives one gift and gets one. Nobody has themselves or their partner, and every code opens the right person.</p>
+      <p class="muted">Copy each person's message and text it to them. It has their code and a link straight to their person. Codes don't give away who anyone drew.</p>
+      <p class="error" id="saveWarning" role="alert" hidden>This browser can't save the draw. Copy the backup below before you close this page, or the codes will be lost.</p>
+      <ul class="rows" id="codeList"></ul>
+      <div class="backup" id="backupBox">
+        <button class="btn btn--ghost btn--small" id="backupBtn" type="button">Copy all six messages as a backup</button>
+      </div>
+      <div class="restart">
+        <button class="link" id="restartBtn" type="button">Start over and redraw</button>
+        <div class="confirm" id="restartConfirm" hidden>
+          <p>Redraw everyone? Any codes you already sent will stop matching.</p>
+          <button class="btn btn--gold btn--small" id="restartYes" type="button">Yes, redraw</button>
+          <button class="btn btn--ghost btn--small" id="restartNo" type="button">Keep this draw</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p class="footnote">Lost your text? Ask Lauren to send your code again.</p>
+</main>
+
+<div class="cover" id="cover" role="dialog" aria-modal="true" aria-labelledby="coverTitle" hidden>
+  <div class="cover__inner" id="coverGate">
+    <p class="year">Eyes on your own tag</p>
+    <h2 id="coverTitle">Ready?</h2>
+    <button class="btn btn--gold" id="showBtn" type="button">Show me</button>
+    <button class="link" id="cancelBtn" type="button">Not now</button>
+  </div>
+  <div class="cover__inner" id="coverReveal" hidden>
+    <p class="reminder" id="revealIntro">You're buying a gift for</p>
+    <div class="tag" id="tag">
+      <span class="tag__label">To</span>
+      <span class="tag__to" id="tagTo"></span>
+      <span class="tag__label">From</span>
+      <span class="tag__from">Your Secret Santa</span>
+    </div>
+    <p class="reminder">Keep it a secret, even from your partner.<br>Gift limit: <strong>$100</strong></p>
+    <button class="btn btn--pearl btn--block" id="doneBtn" type="button">Got it, hide this</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---- Who's playing ----
+  var COUPLES = [["Mom", "Dad"], ["Jen", "Logan"], ["Lauren", "Ryan"]];
+  // Direct link used in texted messages: this site's own address, whatever Netlify names it.
+  var SHARE_URL = location.origin + location.pathname;
+  // The Draw names card only shows when the page is opened as SHARE_URL#ADMIN_KEY.
+  var ADMIN_KEY = "workshop-rdgq1r09zq";
+  var STORE_KEY = "family-secret-santa-2026";
+
+  var PEOPLE = [];
+  COUPLES.forEach(function (c) {
+    PEOPLE.push({ name: c[0], partner: c[1] });
+    PEOPLE.push({ name: c[1], partner: c[0] });
+  });
+  var N = PEOPLE.length;
+
+  // ---- Drawing ----
+  function rand(n) {
+    var a = new Uint32Array(1);
+    crypto.getRandomValues(a);
+    return a[0] % n;
+  }
+
+  function drawNames(noSwaps) {
+    for (var t = 0; t < 10000; t++) {
+      var r = [];
+      for (var i = 0; i < N; i++) r.push(i);
+      for (var j = N - 1; j > 0; j--) {
+        var k = rand(j + 1), tmp = r[j];
+        r[j] = r[k]; r[k] = tmp;
+      }
+      var ok = true;
+      for (var g = 0; g < N && ok; g++) {
+        if (r[g] === g || PEOPLE[r[g]].name === PEOPLE[g].partner) ok = false;
+        else if (noSwaps && r[r[g]] === g) ok = false;
+      }
+      if (ok) return r;
+    }
+    return null;
+  }
+
+  // ---- Secret codes: NAME-XXXYY. XXX hides the match; YY is a check that rejects any single typo or swap ----
+  var ALPHA = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+
+  // Weighted sum mod a prime: one wrong or swapped character always changes it.
+  function checkPair(g, s) {
+    var h = g * 97;
+    for (var i = 0; i < s.length; i++) h += (i * 7 + 3) * ALPHA.indexOf(s[i]);
+    h %= 1021;
+    return ALPHA[Math.floor(h / 32)] + ALPHA[h % 32];
+  }
+
+  function makeCode(g, r) {
+    var k = rand(1024);
+    var v = k * N + ((r + k + 2 * g) % N);
+    var s = "";
+    for (var i = 0; i < 3; i++) { s = ALPHA[v % 32] + s; v = Math.floor(v / 32); }
+    return PEOPLE[g].name.toUpperCase() + "-" + s + checkPair(g, s);
+  }
+
+  function readCode(raw) {
+    var c = String(raw).toUpperCase().replace(/[^A-Z0-9]/g, "");
+    for (var g = 0; g < N; g++) {
+      var pre = PEOPLE[g].name.toUpperCase();
+      if (c.indexOf(pre) !== 0) continue;
+      var rest = c.slice(pre.length);
+      if (rest.length !== 5) continue;
+      if (rest.split("").some(function (x) { return ALPHA.indexOf(x) < 0; })) return null;
+      var s = rest.slice(0, 3);
+      if (rest.slice(3) !== checkPair(g, s)) return null;
+      var v = 0;
+      for (var i = 0; i < 3; i++) v = v * 32 + ALPHA.indexOf(s[i]);
+      var k = Math.floor(v / N);
+      var r = (((v % N) - k - 2 * g) % N + N) % N;
+      // A real draw never pairs someone with themselves or their partner.
+      if (r === g || PEOPLE[r].name === PEOPLE[g].partner) return null;
+      return { giver: g, recipient: r };
+    }
+    return null;
+  }
+
+  // ---- Safety check: run on every draw before any code is shown, and again on every reload ----
+  // Everyone gives exactly one gift and gets exactly one, nobody has themselves or their partner,
+  // nobody pairs up with each other (when that box was ticked), and every code reads back to its match.
+  function verify(s) {
+    if (!s || !s.assign || !s.codes || s.assign.length !== N || s.codes.length !== N) return false;
+    var received = {};
+    for (var g = 0; g < N; g++) {
+      var x = s.assign[g];
+      if (typeof x !== "number" || x < 0 || x >= N || x !== Math.floor(x)) return false;
+      if (x === g || PEOPLE[x].name === PEOPLE[g].partner) return false;
+      if (received[x]) return false;
+      received[x] = true;
+      if (s.noSwaps && s.assign[x] === g) return false;
+      var d = readCode(s.codes[g]);
+      if (!d || d.giver !== g || d.recipient !== x) return false;
+    }
+    return Object.keys(received).length === N;
+  }
+
+  // ---- Saved draw (on this device only) ----
+  var state = null, loadFailed = false;
+  function load() {
+    try {
+      var s = JSON.parse(localStorage.getItem(STORE_KEY));
+      if (s) {
+        if (verify(s)) state = s;
+        else loadFailed = true;
+      }
+    } catch (e) { state = null; }
+  }
+  // Returns false when this browser won't keep the draw, so the page can warn before it is lost.
+  function save() {
+    try {
+      if (state) localStorage.setItem(STORE_KEY, JSON.stringify(state));
+      else localStorage.removeItem(STORE_KEY);
+      return true;
+    } catch (e) { return false; }
+  }
+
+  // ---- Rendering ----
+  var $ = function (id) { return document.getElementById(id); };
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  // Each couple shares an avatar colour.
+  function avatar(g) {
+    return el("span", "avatar avatar--" + Math.floor(g / 2), PEOPLE[g].name.charAt(0));
+  }
+
+  function renderCouples() {
+    var list = $("coupleList");
+    list.textContent = "";
+    COUPLES.forEach(function (c, i) {
+      var li = el("li", "row");
+      var pair = el("span", "pair");
+      pair.append(avatar(i * 2), avatar(i * 2 + 1));
+      li.append(pair, el("span", "row__main", c[0] + " & " + c[1]));
+      list.append(li);
+    });
+  }
+
+  function messageFor(g) {
+    var p = PEOPLE[g].name, code = state.codes[g];
+    return "Hi " + p + "! Your Secret Santa code is " + code + ". Open " + SHARE_URL + "#" + code +
+      " to see who you drew, or open " + SHARE_URL + " and enter your code. The gift limit is $100. Keep it a secret, even from your partner!";
+  }
+
+  function render() {
+    var drawn = !!state;
+    $("setupView").hidden = drawn;
+    $("drawnView").hidden = !drawn;
+    if (!drawn) return;
+
+    var when = new Date(state.drawnAt);
+    $("drawnStatus").textContent = "Names drawn on " + when.toLocaleDateString(undefined, { month: "long", day: "numeric" });
+
+    var list = $("codeList");
+    list.textContent = "";
+    PEOPLE.forEach(function (p, g) {
+      var li = el("li", "row");
+      var main = el("span", "row__main", p.name);
+      main.append(el("code", null, state.codes[g]));
+      var btn = el("button", "btn btn--pearl btn--small", "Copy message");
+      btn.type = "button";
+      btn.addEventListener("click", function () { copyMessage(g, btn, li); });
+      li.append(avatar(g), main, btn);
+      list.append(li);
+    });
+  }
+
+  // Copies text; if the clipboard is blocked, shows it in a box under `host` to copy by hand.
+  function copyText(text, btn, host, label, idle) {
+    var settled = false;
+    var done = function () {
+      if (settled) return;
+      settled = true;
+      btn.textContent = "Copied ✓";
+      setTimeout(function () { btn.textContent = idle; }, 1800);
+    };
+    var fallback = function () {
+      if (settled) return;
+      settled = true;
+      var ta = host.querySelector("textarea");
+      if (!ta) {
+        ta = el("textarea");
+        ta.rows = 3;
+        ta.readOnly = true;
+        ta.setAttribute("aria-label", label);
+        host.append(ta);
+      }
+      ta.value = text;
+      ta.focus();
+      ta.select();
+      btn.textContent = "Select and copy";
+    };
+    try {
+      navigator.clipboard.writeText(text).then(done, fallback);
+      // Some browsers neither copy nor refuse; show the text to copy by hand instead of doing nothing.
+      setTimeout(fallback, 1200);
+    } catch (e) { fallback(); }
+  }
+
+  function copyMessage(g, btn, row) {
+    copyText(messageFor(g), btn, row, PEOPLE[g].name + "'s message", "Copy message");
+  }
+
+  // ---- Private reveal cover ----
+  var current = null, lastFocus = null;
+
+  function openCover(found) {
+    current = found;
+    var name = PEOPLE[found.giver].name;
+    $("coverTitle").textContent = "Ready, " + name + "?";
+    $("showBtn").textContent = "I'm " + name + ", show me";
+    $("coverGate").hidden = false;
+    $("coverReveal").hidden = true;
+    lastFocus = document.activeElement;
+    $("cover").hidden = false;
+    document.body.style.overflow = "hidden";
+    $("showBtn").focus();
+  }
+
+  function reveal() {
+    $("revealIntro").textContent = PEOPLE[current.giver].name + ", you're buying a gift for";
+    $("tagTo").textContent = PEOPLE[current.recipient].name;
+    $("coverGate").hidden = true;
+    $("coverReveal").hidden = false;
+    var tag = $("tag");
+    tag.classList.remove("is-in");
+    void tag.offsetWidth;
+    tag.classList.add("is-in");
+    $("doneBtn").focus();
+  }
+
+  function closeCover() {
+    $("cover").hidden = true;
+    $("tagTo").textContent = "";
+    document.body.style.overflow = "";
+    current = null;
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  // ---- Wiring ----
+  $("drawBtn").addEventListener("click", function () {
+    var noSwaps = $("noSwaps").checked, next = null;
+    for (var attempt = 0; attempt < 20 && !next; attempt++) {
+      var assign = drawNames(noSwaps);
+      if (!assign) continue;
+      var candidate = {
+        drawnAt: Date.now(),
+        noSwaps: noSwaps,
+        assign: assign,
+        codes: assign.map(function (r, g) { return makeCode(g, r); })
+      };
+      if (verify(candidate)) next = candidate;
+    }
+    if (!next) {
+      $("drawError").hidden = false;
+      return;
+    }
+    $("drawError").hidden = true;
+    $("loadError").hidden = true;
+    state = next;
+    $("saveWarning").hidden = save();
+    render();
+    $("codeList").querySelector("button").focus();
+  });
+
+  $("backupBtn").addEventListener("click", function () {
+    var all = PEOPLE.map(function (p, g) { return messageFor(g); }).join("\n\n");
+    copyText(all, $("backupBtn"), $("backupBox"), "All six messages", "Copy all six messages as a backup");
+  });
+
+  $("restartBtn").addEventListener("click", function () {
+    $("restartBtn").hidden = true;
+    $("restartConfirm").hidden = false;
+    $("restartNo").focus();
+  });
+  $("restartNo").addEventListener("click", function () {
+    $("restartConfirm").hidden = true;
+    $("restartBtn").hidden = false;
+    $("restartBtn").focus();
+  });
+  $("restartYes").addEventListener("click", function () {
+    state = null;
+    save();
+    $("saveWarning").hidden = true;
+    var oldBackup = $("backupBox").querySelector("textarea");
+    if (oldBackup) oldBackup.remove();
+    $("restartConfirm").hidden = true;
+    $("restartBtn").hidden = false;
+    render();
+    $("drawBtn").focus();
+  });
+
+  $("codeForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var found = readCode($("codeInput").value);
+    var err = $("codeError");
+    if (!found) {
+      err.textContent = "That code doesn't look right. Check it against your text from Lauren and try again.";
+      err.hidden = false;
+      return;
+    }
+    err.hidden = true;
+    $("codeInput").value = "";
+    openCover(found);
+  });
+
+  $("showBtn").addEventListener("click", reveal);
+  $("cancelBtn").addEventListener("click", closeCover);
+  $("doneBtn").addEventListener("click", closeCover);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !$("cover").hidden) closeCover();
+  });
+
+  // ---- Falling snow (behind the content, so it never covers text) ----
+  function startSnow() {
+    var canvas = $("snow");
+    var ctx = canvas.getContext && canvas.getContext("2d");
+    if (!ctx) return;
+    var still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var colour = getComputedStyle(document.documentElement).getPropertyValue("--snow").trim() || "#fff";
+    var flakes = [], w = 0, h = 0;
+
+    function size() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = window.innerWidth; h = window.innerHeight;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var count = Math.round(Math.min(70, (w * h) / 16000));
+      flakes = [];
+      for (var i = 0; i < count; i++) {
+        flakes.push({
+          x: Math.random() * w, y: Math.random() * h,
+          r: 0.8 + Math.random() * Math.random() * 3.2,
+          speed: 0.25 + Math.random() * 0.6,
+          drift: Math.random() * Math.PI * 2,
+          alpha: 0.3 + Math.random() * 0.5
+        });
+      }
+    }
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = colour;
+      ctx.shadowColor = colour;
+      flakes.forEach(function (f) {
+        ctx.globalAlpha = f.alpha;
+        ctx.shadowBlur = f.r * 3;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+    function tick() {
+      flakes.forEach(function (f) {
+        f.y += f.speed * (0.6 + f.r / 3);
+        f.drift += 0.012;
+        f.x += Math.sin(f.drift) * 0.35;
+        if (f.y > h + 6) { f.y = -6; f.x = Math.random() * w; }
+      });
+      draw();
+      requestAnimationFrame(tick);
+    }
+    size();
+    window.addEventListener("resize", function () { size(); if (still) draw(); });
+    if (still) draw(); else requestAnimationFrame(tick);
+  }
+
+  // ---- Start ----
+  renderCouples();
+  load();
+  $("loadError").hidden = !loadFailed;
+  render();
+  startSnow();
+
+  // The admin link shows the draw; a texted code link opens straight to that person's reveal.
+  function route() {
+    var hash = (location.hash || "").slice(1);
+    try { hash = decodeURIComponent(hash); } catch (e) { /* a mangled link is treated as no code */ }
+    $("drawCard").hidden = hash !== ADMIN_KEY;
+    var fromLink = readCode(hash);
+    if (fromLink && $("cover").hidden) openCover(fromLink);
+  }
+  route();
+  window.addEventListener("hashchange", route);
+})();
+</script>
+</body>
+</html>
